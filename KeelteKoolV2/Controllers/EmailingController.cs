@@ -1,5 +1,6 @@
 ﻿using KeelteKoolV2.Core.DTO;
 using KeelteKoolV2.Core.ServiceInterface;
+using KeelteKoolV2.Models.Emailing;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KeelteKoolV2.Controllers
@@ -34,7 +35,7 @@ namespace KeelteKoolV2.Controllers
                 To = vm.To,
                 Subject = vm.Subject,
                 Body = vm.Body,
-                Attachment = vm.Attachment,
+                Attachment = (List<IFormFile>)vm.Attachment,
             };
             _emailingServices.SendEmail(emailDTO);
             return RedirectToAction(nameof(Index));
