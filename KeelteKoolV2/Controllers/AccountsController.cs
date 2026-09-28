@@ -247,6 +247,39 @@ namespace KeelteKoolV2.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var passwordResetLink = Url.Action("ResetPassword", "Accounts", new { email = model.Email, token = token }, Request.Scheme);
+
+                    var emailDto = new EmailDTO
+                    {
+                        To = model.Email,
+                        Subject = "Reset your password",
+                        Body = $"Please reset your password by clicking <a href='{passwordResetLink}'>here</a>"
+                    };
+
+                    _emailingServices.SendEmail(emailDto);
+
+                    return View("ForgotPasswordConfirmation");
+                }
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
     }
 }
