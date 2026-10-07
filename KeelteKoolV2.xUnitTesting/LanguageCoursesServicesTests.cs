@@ -83,7 +83,7 @@ namespace KeelteKoolV2.xUnitTesting
             //kontrollime et tagastatud objekti id on sama nagu see mis andmebaasi lisatud sai
             Assert.Equal(result.Id, createdCourse.Id); //on sama kontroll nagu alumine
             Assert.True(result.Id == createdCourse.Id); //on sama kontroll nagu ülemine, kirjapilt erineb
-            //võrdleme kas objekt on sama nagu see mis me genereerisime, va. id-ga
+            ////võrdleme kas objekt on sama nagu see mis me genereerisime, va. id-ga
             Assert.Equal(result, createdCourse);
         }
 
